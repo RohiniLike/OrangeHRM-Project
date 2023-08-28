@@ -1,0 +1,103 @@
+package projOrange;
+
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+import jxl.Sheet;
+import jxl.Workbook;
+
+public class OrangeHRM {
+
+	public static void main(String[] args) throws Exception {
+
+		//WebDriverManager.chromedriver().setup();
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\Rohini\\Downloads\\chromedriver-win32\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		driver.manage().window().maximize();
+
+		FileInputStream fin=new FileInputStream("C:\\Users\\Rohini\\Desktop\\OrangeHRM.xls");
+		Workbook w=Workbook.getWorkbook(fin);
+		Sheet s=w.getSheet(0);
+		//Launching OrangeHRM 
+		driver.get(s.getCell(0, 1).getContents());
+		Thread.sleep(2000);
+		//Entering Username & Password and Cliking on Login button
+		driver.findElement(By.xpath(s.getCell(0, 2).getContents())).sendKeys(s.getCell(0, 3).getContents());
+		driver.findElement(By.xpath(s.getCell(0, 4).getContents())).sendKeys(s.getCell(0, 5).getContents());
+		driver.findElement(By.xpath(s.getCell(0, 6).getContents())).click();
+		Thread.sleep(2000);
+
+		//Clicking on Admin option
+		driver.findElement(By.xpath(s.getCell(0, 7).getContents())).click();
+		Thread.sleep(2000);
+
+		//Clicking on UserManagement Dropdown and clicking Users
+		driver.findElement(By.xpath(s.getCell(0, 8).getContents())).click();
+		driver.findElement(By.xpath(s.getCell(0, 9).getContents())).click();
+		Thread.sleep(1000);
+
+		//Clicking on Add button 
+		driver.findElement(By.xpath(s.getCell(1, 48).getContents())).click();
+
+		Actions a=new Actions(driver);
+		Robot robo=new Robot();
+		Thread.sleep(1000);
+
+		//Clicking on User Role and selecting Admin Option 
+		a.click(driver.findElement(By.xpath(s.getCell(1, 49).getContents()))).perform();
+		Thread.sleep(1000);
+		a.keyDown(Keys.ARROW_DOWN).keyDown(Keys.ENTER).perform();
+		Thread.sleep(1000);
+
+		//Now typing Employee Name and selecting the name
+		driver.findElement(By.xpath(s.getCell(1, 42).getContents())).clear();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath(s.getCell(1, 42).getContents())).sendKeys(s.getCell(0, 51).getContents());
+		Thread.sleep(1000);
+		robo.keyPress(KeyEvent.VK_DOWN);
+		robo.keyPress(KeyEvent.VK_ENTER);
+
+		//Clicking on Status and selecting Enabled option
+		a.click(driver.findElement(By.xpath(s.getCell(1, 43).getContents()))).perform();
+		Thread.sleep(1000);
+		a.keyDown(Keys.ARROW_DOWN).keyDown(Keys.ENTER).perform();
+		Thread.sleep(1000);
+
+		//Entering Username
+		driver.findElement(By.xpath(s.getCell(1, 37).getContents())).sendKeys(s.getCell(0, 52).getContents());
+		Thread.sleep(1000);
+
+		//Entering Password
+		driver.findElement(By.xpath(s.getCell(1, 53).getContents())).sendKeys(s.getCell(0, 54).getContents());
+		Thread.sleep(1000);
+
+		//Entering Confirm Password
+		driver.findElement(By.xpath(s.getCell(1, 55).getContents())).sendKeys(s.getCell(0, 54).getContents());
+		Thread.sleep(1000);
+
+		//Clicking on Save Button
+		driver.findElement(By.xpath(s.getCell(1, 56).getContents())).click();
+		
+		Thread.sleep(6000);
+		//To Search the added username 
+		
+		//cliking on Username and entering the username 
+		driver.findElement(By.xpath(s.getCell(1, 58).getContents())).sendKeys(s.getCell(0, 52).getContents());
+		
+		Thread.sleep(1000);
+		//Clicking on Search Button
+		driver.findElement(By.xpath(s.getCell(1, 59).getContents())).click();
+
+	}
+
+}
